@@ -5,18 +5,18 @@ from PyQt5.QtWidgets import QApplication
 from PyQt5 import uic
 import tkinter as tk
 import tkinter.filedialog
-import os
+import os, pathlib
 from os import path
 import sys
 
 class myWin():
-    
+    base_dir = pathlib.Path(__file__).parent.resolve()
     
     
 
     def __init__(self):
         self.app = QApplication([])
-        self.ui = uic.loadUi("MediaDialog.ui")
+        self.ui = uic.loadUi(self.basePath("ui", "MediaDialog.ui"))
         
         #tie functions to signals
         self.ui.nextButton.clicked.connect(self.signal_nextButton)
@@ -104,6 +104,14 @@ class myWin():
             self.tk_root.withdraw()
         return self.tk_root
     
+    def basePath(self, *args):
+        """Return the full path of the folders and files\n
+        Ex. "ui" and "file.ui" will return "basepath//ui//file.ui"
+        """
+        base_path = os.path.join(self.base_dir, args[0])
+        for arg in args[1:]:
+            base_path = os.path.join(base_path, arg)
+        return base_path
         
 def main():
     mywin = myWin()
