@@ -2,7 +2,9 @@
 #Date:      2/29/20
 
 from PyQt5.QtWidgets import QApplication
-from PyQt5 import uic
+from PyQt5.QtCore import Qt
+from PyQt5 import uic, QtGui
+from PyQt5.QtGui import QPalette, QColor
 import tkinter as tk
 import tkinter.filedialog
 import os, pathlib
@@ -16,7 +18,10 @@ class myWin():
 
     def __init__(self):
         self.app = QApplication([])
-        self.ui = uic.loadUi(self.basePath("ui", "MediaDialog.ui"))
+        self.setTheme()
+        
+        
+        self.ui = uic.loadUi(self.basePath('ui', 'MediaDialog.ui'))
         
         #tie functions to signals
         self.ui.nextButton.clicked.connect(self.signal_nextButton)
@@ -112,6 +117,28 @@ class myWin():
         for arg in args[1:]:
             base_path = os.path.join(base_path, arg)
         return base_path
+
+    def setTheme(self):
+        """Set the theme of the app"""
+        self.app.setStyle('Fusion')
+        self.app.setWindowIcon(QtGui.QIcon(self.basePath('icons', 'MainIcon.png')))
+        palette = QPalette()
+        #setting dark theme from https://stackoverflow.com/questions/48256772/dark-theme-for-qt-widgets
+        palette.setColor(QPalette.Window, QColor(53, 53, 53))
+        palette.setColor(QPalette.WindowText, Qt.white)
+        palette.setColor(QPalette.Base, QColor(25, 25, 25))
+        palette.setColor(QPalette.AlternateBase, QColor(53, 53, 53))
+        palette.setColor(QPalette.ToolTipBase, Qt.black)
+        palette.setColor(QPalette.ToolTipText, Qt.white)
+        palette.setColor(QPalette.Text, Qt.white)
+        palette.setColor(QPalette.Button, QColor(53, 53, 53))
+        palette.setColor(QPalette.ButtonText, Qt.white)
+        palette.setColor(QPalette.BrightText, Qt.red)
+        palette.setColor(QPalette.Link, QColor(42, 130, 218))
+        palette.setColor(QPalette.Highlight, QColor(42, 130, 218))
+        palette.setColor(QPalette.HighlightedText, Qt.black)
+        self.app.setPalette(palette)
+        palette
         
 def main():
     mywin = myWin()
